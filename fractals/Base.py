@@ -47,11 +47,11 @@ class Fractal:
     def functions(self):
         raise NotImplementedError("This method should be implemented by subclasses.")
 
-    def get_save_path(self):
-        raise NotImplementedError("This method should be implemented by subclasses.")
-
     def iter_warning(self):
-        raise NotImplementedError("This method should be implemented by subclasses.")
+        return self.iter_num > self.max_iterations
+
+    def get_save_path(self):
+        return os.path.join(self.save_path, self.__class__.__name__)
 
     def load_if_exists(self):
         if self.save_path:
@@ -70,3 +70,4 @@ class Fractal:
         file_path = os.path.join(save_dir, f"iter_{self.iter_num}.pickle")
         with open(file_path, 'wb') as f:
             pickle.dump(self.points_data, f)
+            

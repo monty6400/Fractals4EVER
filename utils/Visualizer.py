@@ -6,7 +6,6 @@ import os
 from matplotlib.widgets import Button
 from tqdm import tqdm
 
-
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
@@ -18,9 +17,10 @@ class Visualize:
         self.pre_calculated_colors = self.pre_calculate_colors()
         self.xmin, self.xmax, self.ymin, self.ymax = self.calculate_bounds()
         self.base_interval = 1000  # Base interval in milliseconds
-        self.images = self.precompute_images()  # Store precomputed images
+        self.images = self.precompute_images()  # Store precomputed result plots
 
     def pre_calculate_colors(self):
+        # Calculate color gradients once to save time
         all_y_data = np.concatenate([points[1] for points in self.points_data])
         vmin, vmax = np.min(all_y_data), np.max(all_y_data)
         norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
@@ -29,6 +29,7 @@ class Visualize:
         return colors, vmin, vmax
 
     def calculate_bounds(self):
+        # Set the display size to the final size to avoid screen resizing each frame
         all_x_data = np.concatenate([points[0] for points in self.points_data])
         all_y_data = np.concatenate([points[1] for points in self.points_data])
         xmin, xmax = np.min(all_x_data), np.max(all_x_data)
@@ -39,7 +40,6 @@ class Visualize:
     def precompute_images(self):
         images = []
         for points in tqdm(self.points_data, desc="Creating Plots"):
-            # Increase the figsize for a larger image
             fig, ax = plt.subplots(dpi=700)
             colors = self.calculate_colors(points[0], points[1])
             ax.scatter(points[0], points[1], c=colors, cmap='viridis', s=1)
@@ -109,13 +109,12 @@ class Visualize:
     def show_plot(self, index):
         # Update displayed image
         self.img_display.set_data(self.images[index])
-        # Correct the aspect ratio. If 'equal' does not work as expected, calculate the aspect ratio manually.
         self.ax.set_title(f'Transformed Points at Iteration {index + 1}')
         self.fig.canvas.draw_idle()
 
     def update_timer_interval(self):
         # Dynamically adjust the timer interval based on the current index to control the speed of automatic navigation
-        new_interval = self.base_interval * (1.1 ** self.current_index)
+        new_interval = min(self.base_interval * (1.1 ** self.current_index), 4 * self.base_interval)
         self.timer.interval = new_interval
 
     def on_next(self, event=None):
