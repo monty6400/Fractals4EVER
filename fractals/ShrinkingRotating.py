@@ -3,7 +3,7 @@ import torch
 
 
 class ShrinkingRotating(Fractal):
-    max_iterations = 11
+    max_iterations = 10
 
     def functions(self):
         def f1(x, y):

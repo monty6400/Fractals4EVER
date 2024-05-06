@@ -2,7 +2,7 @@ from fractals import Fractal
 
 
 class BarnsleyFern(Fractal):
-    max_iterations = 10
+    max_iterations = 11
 
     def functions(self):
         def f1(x, y):

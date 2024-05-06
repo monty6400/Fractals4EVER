@@ -3,7 +3,7 @@ import torch
 
 
 class WeirdKochSnowflake(Fractal):
-    max_iterations = 11
+    max_iterations = 9
 
     def functions(self):
         def f1(x, y):

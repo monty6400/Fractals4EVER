@@ -3,17 +3,16 @@ from utils import Visualize
 
 
 def main():
-    initial_points = [[0.0], [0.0]]
-    fractal_generator = fractals.TwistedSpiral(initial_points, iter_num=0,
-                                                    enforce_iter=True, save_path="saved_fractals")
+    initial_points = [[1.0], [1.0]]
+    fractal_generator = fractals.BarnsleyFern(initial_points, iter_num=12,
+                                               enforce_iter=False, save_path="saved_fractals")
     fractal_generator.iterate()
-    visualizer = Visualize(fractal_generator.points_data)
-    visualizer()
+    visualizer = Visualize(5_000, fractal_generator.points_data)
+    visualizer.show()
 
 
 if __name__ == '__main__':
     main()
-
 
 """What is this?
 def function1(x, y):

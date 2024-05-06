@@ -1,6 +1,7 @@
 import os
 import pickle
 import sys
+import time
 
 import torch
 from tqdm import tqdm
@@ -22,6 +23,7 @@ class Fractal:
                 self.iter_num = self.max_iterations
             else:
                 print(f"\033[93mWarning: iteration number is high, recommended not to surpass {self.max_iterations}")
+                time.sleep(1)
 
     def iterate(self):
         if self.load_if_exists():
@@ -70,4 +72,3 @@ class Fractal:
         file_path = os.path.join(save_dir, f"iter_{self.iter_num}.pickle")
         with open(file_path, 'wb') as f:
             pickle.dump(self.points_data, f)
-            
